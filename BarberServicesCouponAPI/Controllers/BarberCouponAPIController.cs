@@ -1,9 +1,11 @@
 using AutoMapper;
 using BarberServicesCouponAPI.Data;
 using BarberServicesCouponAPI.Models;
+using BarberServicesCouponAPI.Models.DTO;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BarberServicesCouponAPI.Controllers
 {
@@ -14,11 +16,14 @@ namespace BarberServicesCouponAPI.Controllers
     public class BarberCouponApiController : ControllerBase
     {
         private readonly AppDBContext _db;
-        // Mapper and DTO will come here
+        private ResponseDTO _response;
+        private IMapper _mapper;
         
-        public BarberCouponApiController(AppDBContext db)
+        public BarberCouponApiController(AppDBContext db, IMapper mapper)
         {
             _db = db;
+            _response = new ResponseDTO();
+            _mapper = mapper;
             // DTO and Mapper will come here
         
         }
@@ -34,10 +39,20 @@ namespace BarberServicesCouponAPI.Controllers
         // Getting the entire list of Barber Coupons
         [HttpGet]
         [Route("GetAllBarberCoupons")]
-        public List<BarberCoupon> GetListofBarberCoupons()
+        public ResponseDTO GetListofBarberCoupons()
         {
-            var listOfAllBarberCoupons = _db.barberCoupons.ToList();
-            return listOfAllBarberCoupons;
+            try 
+            {
+                IEnumerable<BarberCoupon> barberCoupons = _db.barberCoupons.ToList();
+                _response.Result = _mapper.Map<IEnumerable<BarberCouponDTO>>(barberCoupons);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
         } 
 
         [HttpPost]
@@ -50,7 +65,6 @@ namespace BarberServicesCouponAPI.Controllers
                 // Dto will come here
                 _db.barberCoupons.Add(barberCoupon);
                 _db.SaveChanges();
-
 
             }
 

@@ -20,7 +20,9 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 
 // To be implemented later
 // IMapper mapper = MappingConfig.RegisterMaps().CreateMapper(); 
-
+IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 

@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 
-
 namespace BarberServicesCouponAPI.Models
 {
     public class BarberCoupon
