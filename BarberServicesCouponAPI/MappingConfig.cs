@@ -10,11 +10,13 @@ namespace BarberServicesCouponAPI
     public class MappingConfig
     {
         public static MapperConfiguration RegisterMaps()
-        {
+        {            
             var mappingConfig = new MapperConfiguration(config =>
             {
                 config.CreateMap<BarberCouponDTO, BarberCoupon>();
                 config.CreateMap<BarberCoupon, BarberCouponDTO>();
+                config.CreateMap<APICheckInfoDTO,APICheckInfo>();
+                config.CreateMap<APICheckInfo, APICheckInfoDTO>();
             });
             return mappingConfig;
         }

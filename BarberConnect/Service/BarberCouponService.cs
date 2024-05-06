@@ -1,6 +1,7 @@
 using BarberConnect.Models;
 using BarberConnect.Service.IService;
 using BarberConnect.Utility;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace BarberConnect.Service
 {
@@ -19,7 +20,7 @@ namespace BarberConnect.Service
             {
                 ApiType = SD.ApiType.POST,
                 Data = barbercouponDto,
-                Url = SD.BarberCouponAPIBase + "/api/coupon"
+                Url = SD.BarberCouponAPIBase + "/api/barbercouponS/addingbarbercoupon"
             });
         }
 
@@ -67,6 +68,17 @@ namespace BarberConnect.Service
                 Data = barbercouponDto,
                 Url = SD.BarberCouponAPIBase + "/api/coupon"
             });
+        }
+
+        public async Task<ResponseDTO?> GetAPICheckAsync()
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = SD.ApiType.GET,
+                Url = SD.BarberCouponAPIBase + "/api/barbercoupons/APICheck" 
+            }
+            );
+
         }
     }
 }

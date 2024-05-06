@@ -30,10 +30,21 @@ namespace BarberServicesCouponAPI.Controllers
 
         [HttpGet]
         [Route("APICheck")]
-        public string APICheck()
+        public ResponseDTO APICheck()
         {
-            var checkString = "This messsage means the API is working";
-            return checkString;
+            try 
+            {
+                APICheckInfo apiCheckInfo = new APICheckInfo();
+                apiCheckInfo.APICheckInformation = "This messsage means the API is working";
+                _response.Result = _mapper.Map<APICheckInfoDTO>(apiCheckInfo);
+            }   
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }     
+            // var checkString = "This messsage means the API is working";
+            return _response;
         }
 
         // Getting the entire list of Barber Coupons
@@ -58,100 +69,96 @@ namespace BarberServicesCouponAPI.Controllers
         [HttpPost]
         // Authorise will come here
         [Route("AddingBarberCoupon")]
-        public BarberCoupon Post([FromBody] BarberCoupon barberCoupon)
+        public ResponseDTO Post([FromBody] BarberCouponDTO barberCouponDTO)
         {
             try 
             {
-                // Dto will come here
+                BarberCoupon barberCoupon = _mapper.Map<BarberCoupon>(barberCouponDTO);
                 _db.barberCoupons.Add(barberCoupon);
                 _db.SaveChanges();
+                _response.Result = _mapper.Map<BarberCouponDTO>(barberCoupon);
 
             }
 
             catch(Exception ex)
             {
-                barberCoupon.BarberCouponCode = "Something went wrong";
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;                
             }
-            return barberCoupon;
+            return _response;
         }
 
         [HttpPut]
         [Route("UpdatingBarberCoupon")]
 
-        public BarberCoupon Put([FromBody] BarberCoupon barberCoupon)
+        public ResponseDTO Put([FromBody] BarberCouponDTO barberCouponDTO)
         {
             try 
             {
-                // Mapper will come here
+                
+                BarberCoupon barberCoupon = _mapper.Map<BarberCoupon>(barberCouponDTO);
                 _db.barberCoupons.Update(barberCoupon);
                 _db.SaveChanges();
-
-                // Mapper will come here 
+                _response.Result = _mapper.Map<BarberCouponDTO>(barberCoupon);
 
             }
 
             catch (Exception ex)
             {
-                // _barberCoupon.IsSuccess = false; 
-                // _barberCoupon.Message = ex.Message;
-                // Dto will come here
-                barberCoupon.BarberCouponCode = "Something went wrong";
-
+                _response.IsSuccess = false;
+                _response.Message = ex.Message; 
             }
 
-            return barberCoupon;
+            return _response;
         }
 
         [HttpDelete]
         [Route("{id:int}")]
-        public BarberCoupon Delete(int id)
+        public ResponseDTO Delete(int id)
         {
             BarberCoupon barberCoupon = new BarberCoupon();
             try 
             {
                 barberCoupon = _db.barberCoupons.First(u => u.BarberCouponId == id); 
                 _db.barberCoupons.Remove(barberCoupon);
-                _db.SaveChanges();  
+                _db.SaveChanges();
+                _response.Result = _mapper.Map<BarberCouponDTO>(barberCoupon);
+
             }
 
             catch (Exception ex)
             {
-                // _barberCoupon.IsSuccess = false; 
-                // _barberCoupon.Message = ex.Message;
-                // Dto will come here
-                barberCoupon.BarberCouponCode = "Something went wrong";
+                _response.IsSuccess = false;
+                _response.Message = ex.Message; 
 
             }
             
-            return barberCoupon;
+            return _response;
         }
 
         [HttpGet]
         [Route("{id:int}")]
 
-        public BarberCoupon GetByCode(int id)
+        public ResponseDTO GetByCode(int id)
         {
             BarberCoupon barberCoupon = new BarberCoupon(); 
             try
-            {
-            
+            {    
+
             barberCoupon  = _db.barberCoupons.First(u => u.BarberCouponId == id);
-            //_response.Result = obj;
-            // _response.Result = _mapper.Map<CouponDTO>(obj); 
-            // Mapper will come here
+            _response.Result = _mapper.Map<BarberCouponDTO>(barberCoupon);
 
             }
 
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // _barberCoupon.IsSuccess = false; 
-                // _barberCoupon.Message = ex.Message;
-                // Dto will come here
-                barberCoupon.BarberCouponCode = "Something went wrong";
+                _response.IsSuccess = false; 
+                _response.Message = ex.Message;
+                
 
             }
 
-            return barberCoupon;
+            return _response;
 
 
         }

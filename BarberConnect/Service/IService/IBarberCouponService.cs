@@ -10,5 +10,7 @@ namespace BarberConnect.Service.IService
         Task<ResponseDTO?> CreateBarberCouponsAsync(BarberCouponDTO barbercouponDto);
         Task<ResponseDTO?> UpdateBarberCouponsAsync(BarberCouponDTO barbercouponDto);
         Task<ResponseDTO?> DeleteBarberCouponsAsync(int id);
+        Task<ResponseDTO?> GetAPICheckAsync();
+
     }
 }

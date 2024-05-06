@@ -2,6 +2,7 @@ using BarberConnect.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using BarberConnect.Models;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BarberConnect.Controllers
 {
@@ -41,11 +42,49 @@ namespace BarberConnect.Controllers
 
             return View(list); 
         }
+
+        public async Task<IActionResult> BarberCouponCreate()
+		{
+			return View();
+		}
+
+        [HttpPost]
+        public async Task<IActionResult> BarberCouponCreate(BarberCouponDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDTO? response = await _barbercouponService.CreateBarberCouponsAsync (model);
+                if (response != null && response.IsSuccess) {
+                    TempData["success"] = "Barber Coupon Created Successfully";
+                    return RedirectToAction(nameof(BarberCouponIndex));
+                }
+            }
+
+            return View(model); 
+        }
+
+        public async Task<IActionResult> APIStatus()
+        {
+        
+            APICheckInfoDTO apiCheckInfoDTO = new APICheckInfoDTO();
+            apiCheckInfoDTO.APICheckInformation = "Some Dummy Information"; 
+            ResponseDTO? response = await _barbercouponService.GetAPICheckAsync();
+
+            if (response != null && response.IsSuccess)
+            {
+                apiCheckInfoDTO = JsonConvert.DeserializeObject<APICheckInfoDTO>(Convert.ToString(response.Result)); 
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+
+            }
+
+
+            return View(apiCheckInfoDTO);
+        
+        }
         
     }
-
-
-
-
 
 }
