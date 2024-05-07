@@ -63,6 +63,44 @@ namespace BarberConnect.Controllers
             return View(model); 
         }
 
+        public async Task<IActionResult>BarberCouponUpdate(int BarberCouponID)
+        {
+            ResponseDTO? response = await _barbercouponService.GetBarberCouponByIdAsync(BarberCouponID);
+
+            if (response != null && response.IsSuccess)
+            {
+                BarberCouponDTO? model = JsonConvert.DeserializeObject<BarberCouponDTO>(Convert.ToString(response.Result));
+                return View(model); 
+
+            }
+            else 
+            {
+                TempData["error"] = response?.Message;
+            }
+            return NotFound(); 
+        }
+        
+        [HttpPost]
+
+        public async Task<IActionResult> BarberCouponUpdate(BarberCouponDTO barberCouponDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDTO? response = await _barbercouponService.UpdateBarberCouponsAsync(barberCouponDTO);
+
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Product Update Successfully"; 
+                    return RedirectToAction(nameof(BarberCouponIndex));
+                }
+                else
+                {
+                    TempData["Error"] = response?.Message;
+                }
+            }
+            return View(barberCouponDTO); 
+        }
+        
         public async Task<IActionResult> APIStatus()
         {
         
@@ -79,12 +117,60 @@ namespace BarberConnect.Controllers
                 TempData["error"] = response?.Message;
 
             }
-
-
             return View(apiCheckInfoDTO);
-        
         }
-        
+
+            public async Task<IActionResult> BarberCouponShow(int barbercouponID)
+            {
+                ResponseDTO? response = await _barbercouponService.GetBarberCouponByIdAsync(barbercouponID);
+
+                if (response != null && response.IsSuccess)
+                {
+                    BarberCouponDTO? model = JsonConvert.DeserializeObject<BarberCouponDTO>(Convert.ToString(response.Result));
+                    return View(model);
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+                return NotFound();
+            }
+
+        public async Task<IActionResult>BarberCouponDelete(int BarberCouponID)
+        {
+            ResponseDTO? response = await _barbercouponService.GetBarberCouponByIdAsync(BarberCouponID); 
+
+            if(response != null && response.IsSuccess)
+            {
+                BarberCouponDTO? model = JsonConvert.DeserializeObject<BarberCouponDTO>(Convert.ToString(response.Result));
+
+                return View(model);
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BarberCouponDelete(BarberCouponDTO barbercouponDto)
+        {
+            
+            ResponseDTO? response = await _barbercouponService.DeleteBarberCouponsAsync(barbercouponDto.BarberCouponId);
+
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Barber Coupon deleted successfully";
+                return RedirectToAction(nameof(BarberCouponIndex));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            return View(barbercouponDto);
+        }
+       
     }
 
 }

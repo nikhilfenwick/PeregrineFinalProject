@@ -160,9 +160,7 @@ namespace BarberServicesCouponAPI.Controllers
 
             return _response;
 
-
         }
-
 
     }
 

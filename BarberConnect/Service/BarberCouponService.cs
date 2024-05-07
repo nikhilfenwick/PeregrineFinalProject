@@ -29,7 +29,7 @@ namespace BarberConnect.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.DELETE,
-                Url = SD.BarberCouponAPIBase + "/api/coupon/" + id
+                Url = SD.BarberCouponAPIBase + "/api/BarberCoupons/" + id
             });
         }
 
@@ -56,7 +56,7 @@ namespace BarberConnect.Service
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.BarberCouponAPIBase + "/api/coupon/" + id
+                Url = SD.BarberCouponAPIBase + "/api/Barbercoupons/" + id
             });
         }
 
@@ -66,7 +66,7 @@ namespace BarberConnect.Service
             {
                 ApiType = SD.ApiType.PUT,
                 Data = barbercouponDto,
-                Url = SD.BarberCouponAPIBase + "/api/coupon"
+                Url = SD.BarberCouponAPIBase + "/api/barbercoupons/updatingbarbercoupon"
             });
         }
 

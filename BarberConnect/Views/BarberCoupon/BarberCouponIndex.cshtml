@@ -50,6 +50,16 @@
 								<i class="bi bi-trash"></i>
 							</a>
 						</td>
+						<td>
+							<a asp-action="BarberCouponUpdate" asp-route-BarbercouponId="@item.BarberCouponId" class="btn btn-danger">
+								<i class="bi bi-pencil-fill"></i>
+							</a>
+						</td>
+						<td>
+							<a asp-action="BarberCouponShow" asp-route-barbercouponId="@item.BarberCouponId" class="btn btn-danger">
+								<i class="bi bi-eye"></i>
+							</a>
+						</td>
 					</tr>
 				}
 			</tbody>
