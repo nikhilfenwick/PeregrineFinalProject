@@ -18,8 +18,6 @@ builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultSQliteConnection"));
 });
 
-// To be implemented later
-// IMapper mapper = MappingConfig.RegisterMaps().CreateMapper(); 
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -33,8 +31,55 @@ builder.Services.AddEndpointsApiExplorer();
 // Authorisation token box to come later
 
 
-builder.Services.AddSwaggerGen();
-// Authentication settings will come here later 
+builder.Services.AddSwaggerGen(option =>
+{
+    option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference= new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id=JwtBearerDefaults.AuthenticationScheme
+                }
+            }, new string[]{}
+        }
+    });
+});
+
+var settingsSection = builder.Configuration.GetSection("ApiSettings");
+
+var secret = settingsSection.GetValue<string>("Secret");
+var issuer = settingsSection.GetValue<string>("Issuer");
+var audience = settingsSection.GetValue<string>("Audience");
+
+var key = Encoding.ASCII.GetBytes(secret);
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidIssuer = issuer,
+        ValidAudience = audience,
+        ValidateAudience = true
+    };
+});
 
 var app = builder.Build();
 

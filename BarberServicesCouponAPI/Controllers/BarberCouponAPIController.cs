@@ -11,7 +11,7 @@ namespace BarberServicesCouponAPI.Controllers
 {
     [Route("api/BarberCoupons")]
     [ApiController]
-    // Authorise will come here later
+    
 
     public class BarberCouponApiController : ControllerBase
     {
@@ -43,6 +43,26 @@ namespace BarberServicesCouponAPI.Controllers
                 _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }     
+            // var checkString = "This messsage means the API is working";
+            return _response;
+        }
+
+        [HttpGet]
+        [Route("APICheckAuthorized")]
+        [Authorize]
+        public ResponseDTO APICheckAuthorized()
+        {
+            try
+            {
+                APICheckInfo apiCheckInfo = new APICheckInfo();
+                apiCheckInfo.APICheckInformation = "This messsage means the API is working, with the token";
+                _response.Result = _mapper.Map<APICheckInfoDTO>(apiCheckInfo);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
             // var checkString = "This messsage means the API is working";
             return _response;
         }

@@ -9,19 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<IBarberCouponService, BarberCouponService>();   
-// Authentication Service Will Come here
+builder.Services.AddHttpClient<IBarberCouponService, BarberCouponService>();
+builder.Services.AddHttpClient<IAuthService, AuthService>();
 
 SD.BarberCouponAPIBase = builder.Configuration["ServiceUrls:BarberCouponAPI"];
-// Authentication base will come here
+SD.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
 
-// Token service will come here
-
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IBarberCouponService, BarberCouponService>();
-// Authentication service will come here
+builder.Services.AddScoped<IAuthService, AuthService>();
 
-// Cookie builder service will come here
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(options =>
+	{
+		options.ExpireTimeSpan = TimeSpan.FromHours(10);
+		options.LoginPath = "/Auth/Login";
+		options.AccessDeniedPath = "/Auth/AccessDenied";
+	});
 
 var app = builder.Build();
 
@@ -38,7 +43,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Authentication will come here
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

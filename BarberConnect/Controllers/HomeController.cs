@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BarberConnect.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BarberConnect.Controllers;
 
@@ -20,6 +21,12 @@ public class HomeController : Controller
     }
 
     public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [Authorize]
+    public IActionResult TestSimpleAuthorize()
     {
         return View();
     }

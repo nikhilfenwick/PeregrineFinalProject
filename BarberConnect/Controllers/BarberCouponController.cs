@@ -105,7 +105,7 @@ namespace BarberConnect.Controllers
         {
         
             APICheckInfoDTO apiCheckInfoDTO = new APICheckInfoDTO();
-            apiCheckInfoDTO.APICheckInformation = "Some Dummy Information"; 
+            // apiCheckInfoDTO.APICheckInformation = "Some Dummy Information"; 
             ResponseDTO? response = await _barbercouponService.GetAPICheckAsync();
 
             if (response != null && response.IsSuccess)

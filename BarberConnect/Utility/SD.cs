@@ -4,7 +4,7 @@ namespace BarberConnect.Utility
     public class SD
     {
         public static string BarberCouponAPIBase { get; set; }
-        public static string BarberAuthAPIBase { get; set; }
+        public static string AuthAPIBase { get; set; }
 
         public const string TokenCookie = "JWTToken";
         public const string RoleAdmin = "ADMIN";

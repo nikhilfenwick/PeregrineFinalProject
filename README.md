@@ -1,20 +1,25 @@
 # Peregrine Final Project.
 
-This is for my final project which is website which I have created for my local Barbers. 
+This is for my final project which is website which I have created, 
 
-Welcome to the Peregrine Barbers' website repository! This project is for my final project, which is a website I created for my local barbershop.
+Welcome to the Peregrine BarberConnect' website repository!
 
 # Overview:
 
-This website aims to provide an online platform for our local barbershop, offering users the convenience of creating personal accounts and easily booking appointments with their preferred barbers.
+A basic CRUD based coupon management system for barbers.
 
-# Features:
+1. The barbers can add coupons.
+2. The barbers can update/edit existing coupons.
+3. The barbers can delete coupons. 
+4. The brbers can see all coupons and individual coupons. 
 
-Features:
+Project also contains an authentication server with the following features; 
 
-1. User Account Creation: Users can create their own accounts on the website, enabling them to manage their appointments and preferences conveniently.
-2. Appointment Booking: The website facilitates seamless appointment booking, allowing users to schedule appointments with their desired barbers at their preferred date and time.
-3. Responsive Design: The website is designed to be responsive across various devices, ensuring optimal user experience on desktops, tablets, and smartphones.
+1. Register a new account.
+2. Log in with the account. 
+3. Collect tokens using the account login and password. 
+4. Web app has views, that can only be accessed with authorisation.
+5. Web API has end points that can only be accessed with authorisation. 
 
 # Technologies Used:
 
@@ -38,4 +43,5 @@ Features:
 
 Nikhil Fenwick 
 LinkedIn - https://www.linkedin.com/in/nikhil-fenwick-4a6625256/
+
 
